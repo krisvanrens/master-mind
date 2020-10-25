@@ -42,7 +42,7 @@ using Indices = Container<unsigned int>;
 
 namespace helpers {
 
-void print(std::string prefix, const auto &series) {
+void print(std::string &&prefix, const auto &series) {
   std::cout << prefix << ": [" << [&]{
     std::stringstream result;
     std::ranges::for_each(std::as_const(series), [&](const auto field) { result << static_cast<int>(field); });
