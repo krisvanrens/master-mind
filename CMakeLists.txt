@@ -48,7 +48,7 @@ run_conan()
 
 if(ENABLE_TESTING)
   enable_testing()
-  add_subdirectory(test)
+  add_subdirectory(tests)
 endif()
 
 add_subdirectory(src)

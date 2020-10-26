@@ -7,7 +7,6 @@
 #define STATIC_REQUIRE(assertion) static_assert(assertion, #assertion)
 #endif
 
-TEST_CASE("XXX")
-{
+TEST_CASE("XXX") {
   STATIC_REQUIRE(true);
 }
