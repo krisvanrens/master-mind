@@ -1,4 +1,3 @@
-# Generic test that uses conan libs
 add_executable(master-mind master-mind.cpp)
 target_link_libraries(
   master-mind
