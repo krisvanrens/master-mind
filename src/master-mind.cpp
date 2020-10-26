@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <array>
 #include <iostream>
-#include <random>
 #include <numeric>
+#include <random>
 #include <sstream>
 #include <utility>
 
@@ -27,23 +27,19 @@ static_assert(NUMBER_OF_FIELDS > 0);
 static_assert(NUMBER_OF_COLORS > 0);
 static_assert(NUMBER_OF_COLORS <= static_cast<unsigned char>(Color::MAX_NUMBER_OF_COLORS_));
 
-enum struct Outcome : unsigned char {
-  Incorrect = 0,
-  CorrectColor,
-  Correct
-};
+enum struct Outcome : unsigned char { Incorrect = 0, CorrectColor, Correct };
 
 template<typename T>
 using Container = typename std::array<T, NUMBER_OF_FIELDS>;
 
-using Secret = Container<Color>;
-using Score = Container<Outcome>;
+using Secret  = Container<Color>;
+using Score   = Container<Outcome>;
 using Indices = Container<unsigned int>;
 
 namespace helpers {
 
-void print(std::string &&prefix, const auto &series) {
-  std::cout << prefix << ": [" << [&]{
+void print(std::string&& prefix, const auto& series) {
+  std::cout << prefix << ": [" << [&] {
     std::stringstream result;
     std::ranges::for_each(std::as_const(series), [&](const auto field) { result << static_cast<int>(field); });
     return result.str();
@@ -59,25 +55,25 @@ template<typename T>
   return result;
 }
 
-[[nodiscard]] constexpr bool win(const Score &score) {
-  return std::ranges::all_of(score, [](const auto &field) { return field == Outcome::Correct; });
+[[nodiscard]] constexpr bool win(const Score& score) {
+  return std::ranges::all_of(score, [](const auto& field) { return field == Outcome::Correct; });
 }
 
-void print(const Secret &secret) {
+void print(const Secret& secret) {
   helpers::print("Secret", secret);
 }
 
-void print(const Score &score) {
+void print(const Score& score) {
   helpers::print("Score ", score);
 }
 
 [[nodiscard]] Secret generateSecret() {
   Secret result;
 
-  std::random_device device;
-  std::mt19937 generator(device());
+  std::random_device              device;
+  std::mt19937                    generator(device());
   std::uniform_int_distribution<> distribution(0, NUMBER_OF_COLORS - 1);
-  std::ranges::for_each(result, [&](auto &field) { field = static_cast<Color>(distribution(generator)); });
+  std::ranges::for_each(result, [&](auto& field) { field = static_cast<Color>(distribution(generator)); });
 
   return result;
 }
@@ -89,36 +85,36 @@ private:
   Secret secret_ = {};
 
   [[nodiscard]] constexpr IntermediateScore scoreFullyCorrectGuesses(const Secret& secret) const {
-    Score result = {};
+    Score           result = {};
     Container<bool> marker = {};
-  
+
     std::ranges::for_each(indices(secret), [&](auto index) {
       if (secret[index] == secret_[index]) {
         result[index] = Outcome::Correct;
         marker[index] = true;
       }
     });
-  
+
     return {result, marker};
   }
 
   [[nodiscard]] constexpr Score scoreColorCorrectGuesses(const Secret& secret, IntermediateScore&& score) const {
     auto&& [result, marker] = std::move(score);
-  
+
     std::ranges::for_each(indices(secret), [&](auto index) {
       if (result[index] != Outcome::Correct) {
         std::ranges::any_of(indices(secret), [&](auto markerIndex) {
           if (!marker[markerIndex] && (secret[index] == secret_[markerIndex])) {
-            result[index] = Outcome::CorrectColor;
+            result[index]       = Outcome::CorrectColor;
             marker[markerIndex] = true;
             return true;
           }
-  
+
           return false;
         });
       }
     });
-  
+
     return result;
   }
 
