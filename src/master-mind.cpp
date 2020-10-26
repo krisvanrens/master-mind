@@ -1,10 +1,10 @@
 #include <algorithm>
 #include <array>
-#include <iostream>
 #include <numeric>
 #include <random>
-#include <sstream>
 #include <utility>
+
+#include "helpers.hpp"
 
 static constexpr unsigned int NUMBER_OF_FIELDS = 100;
 static constexpr unsigned int NUMBER_OF_COLORS = 10;
@@ -35,18 +35,6 @@ using Container = typename std::array<T, NUMBER_OF_FIELDS>;
 using Secret  = Container<Color>;
 using Score   = Container<Outcome>;
 using Indices = Container<unsigned int>;
-
-namespace helpers {
-
-void print(std::string&& prefix, const auto& series) {
-  std::cout << prefix << ": [" << [&] {
-    std::stringstream result;
-    std::ranges::for_each(std::as_const(series), [&](const auto field) { result << static_cast<int>(field); });
-    return result.str();
-  }() << "]\n";
-}
-
-} // namespace helpers
 
 template<typename T>
 [[nodiscard]] constexpr auto indices(T) {
