@@ -10,7 +10,8 @@ Live initial example here: https://www.godbolt.org/z/x1KvoY
 ## Requirements
 
 * Conan
-* GCC-10 or higher
+* GCC v10 or higher
+* Clang-format v10 or higher
 
 ## Building instructions
 
