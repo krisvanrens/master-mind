@@ -1,8 +1,5 @@
-add_executable(master-mind master-mind.cpp)
+add_executable(master-mind-cli master-mind-cli.cpp)
 target_link_libraries(
-  master-mind
+  master-mind-cli
   PRIVATE project_options
-          project_warnings
-          CONAN_PKG::docopt.cpp
-          CONAN_PKG::fmt
-          CONAN_PKG::spdlog)
+          project_warnings)
