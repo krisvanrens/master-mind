@@ -60,14 +60,14 @@ then
   do
     if [ -n "$(clang-format-6.0 ${line} | diff -u - <(cat ${line}) | grep -v '^$')" ]
     then
-      clang-format ${line} | diff -u - <(cat ${line}) | view -
+      clang-format ${line} | diff -u --from-file=${line} - | view -
     fi
   done < ${FILE_LIST}
 elif [ ${SIMULATE_MODE} -eq 1 ]
 then
   while read line
   do
-    clang-format ${line} | diff -u - <(cat ${line})
+    clang-format ${line} | diff -u --from-file=${line} -
   done < ${FILE_LIST}
 fi
 
