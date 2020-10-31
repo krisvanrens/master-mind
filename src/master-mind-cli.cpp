@@ -23,17 +23,13 @@ static void print(const Score& score) {
   helpers::print("Score ", score);
 }
 
-[[nodiscard]] static Secret generateRandomSecret(bool verbose = false) {
+[[nodiscard]] static Secret generateRandomSecret() {
   Secret result;
 
   std::random_device              device;
   std::mt19937                    generator(device());
   std::uniform_int_distribution<> distribution(0, NUMBER_OF_COLORS - 1);
   std::ranges::for_each(result, [&](auto& field) { field = static_cast<Color>(distribution(generator)); });
-
-  if (verbose) {
-    print(result);
-  }
 
   return result;
 }
@@ -42,30 +38,34 @@ static void print(const Score& score) {
   Secret result;
   auto   resultColor = result.begin();
 
-  std::ranges::for_each_n(secret.cbegin(), static_cast<long>(std::min(secret.size(), result.size())), [&](auto color) {
-    *resultColor++ =
-      static_cast<Color>(std::clamp(std::atoi(&color), 0, static_cast<int>(Color::MAX_NUMBER_OF_COLORS_) - 1));
-  });
+  std::ranges::for_each_n(secret.cbegin(), static_cast<long>(std::min(secret.size(), result.size())),
+                          [&](auto character) {
+                            unsigned int color = static_cast<unsigned int>(std::atoi(&character));
+                            *resultColor++     = static_cast<Color>(std::clamp(color, 0u, NUMBER_OF_COLORS - 1));
+                          });
 
   return result;
 }
 
 static constexpr auto USAGE =
-  R"(Usage: master-mind-cli [-h|--help] [-v|--verbose] <guess>
+  R"(Usage: master-mind-cli [-h|--help] [--secret=SECRET] [-v|--verbose] GUESS
 
--h --help    Show this help info
--v --verbose Show guess/secret/outcome
+-h --help       Show this help info
+--secret=SECRET Provide a custom secret instead of generating a random one
+-v --verbose    Show guess/secret/outcome
 )";
 
 int main(int argc, char** argv) {
-  const auto arguments = docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, true);
-  const bool verbose   = (arguments.find("-v") != arguments.end()) || (arguments.find("--verbose") != arguments.end());
+  const auto args         = docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, true);
+  const bool verbose      = (args.find("-v") != args.end()) || (args.find("--verbose") != args.end());
+  const bool customSecret = (args.find("--secret") != args.end()) && args.at("--secret");
 
-  auto&& secret = generateRandomSecret(verbose);
-  auto   guess  = secretFromString(arguments.at("<guess>").asString());
+  auto&& secret = (customSecret ? secretFromString(args.at("--secret").asString()) : generateRandomSecret());
+  auto   guess  = secretFromString(args.at("GUESS").asString());
   auto   score  = MasterMind{std::move(secret)}.guess(guess);
 
   if (verbose) {
+    print(secret);
     print(guess);
     print(score);
   }
