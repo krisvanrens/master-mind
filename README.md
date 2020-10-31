@@ -24,7 +24,9 @@ make
 
 ## `master-mind-cli`
 
-This is a command-line tool to play around with the codemake-side:
+This is a command-line tool to play around with the codemaker-side, or to implement solvers in other languages than C++ that use the CLI tool for checking.
+
+Usage information:
 ```
 Usage: master-mind-cli [-h|--help] [--secret=SECRET] [-v|--verbose] GUESS
 
@@ -39,3 +41,4 @@ Secret: [9001285452600931]
 Secret: [2348761560631927]
 Score : [2211111111100000]
 ```
+The return code is `0` if the score is a win, otherwise it is `1`.
