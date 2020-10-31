@@ -21,3 +21,21 @@ ccmake -S . -B ./build/
 cd build
 make
 ```
+
+## `master-mind-cli`
+
+This is a command-line tool to play around with the codemake-side:
+```
+Usage: master-mind-cli [-h|--help] [--secret=SECRET] [-v|--verbose] GUESS
+
+-h --help       Show this help info
+--secret=SECRET Provide a custom secret instead of generating a random one
+-v --verbose    Show guess/secret/outcome
+```
+E.g.:
+```
+$ master-mind-cli --secret=9001285452600931 2348761560631927                                                                                                                                  │
+Secret: [9001285452600931]
+Secret: [2348761560631927]
+Score : [2211111111100000]
+```
