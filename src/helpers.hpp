@@ -1,16 +1,20 @@
+#pragma once
+
 #include <algorithm>
-#include <iostream>
-#include <sstream>
 #include <string>
+
+#include "master-mind.hpp"
 
 namespace helpers {
 
-void print(std::string&& prefix, const auto& series) {
-  std::cout << prefix << ": [" << [&] {
-    std::stringstream result;
-    std::ranges::for_each(std::as_const(series), [&](const auto field) { result << static_cast<int>(field); });
-    return result.str();
-  }() << "]\n";
+[[nodiscard]] Secret generateRandomSecret();
+[[nodiscard]] Secret secretFromString(const std::string& secret);
+
+void print(const Score& score);
+void print(const Secret& secret);
+
+[[nodiscard]] static constexpr bool win(const Score& score) {
+  return std::ranges::all_of(score, [](const auto& field) { return field == Outcome::Correct; });
 }
 
 } // namespace helpers

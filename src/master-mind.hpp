@@ -1,3 +1,5 @@
+#pragma once
+
 #include <algorithm>
 #include <array>
 #include <numeric>
@@ -5,8 +7,8 @@
 #include <tuple>
 #include <utility>
 
-static constexpr unsigned int NUMBER_OF_FIELDS = 100;
-static constexpr unsigned int NUMBER_OF_COLORS = 10;
+static constexpr unsigned int NUMBER_OF_FIELDS = 4;
+static constexpr unsigned int NUMBER_OF_COLORS = 2;
 
 enum struct Color : unsigned char {
   Black = 0,
