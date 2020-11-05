@@ -3,12 +3,12 @@
 #include "../master-mind.hpp"
 #include "solver.hpp"
 
-class SolverBruteForce final : public MasterMindSolver {
+class SolverBruteForce final : public Solver {
 private:
   const MasterMind game_;
 
 public:
   SolverBruteForce(const MasterMind& game);
 
-  [[nodiscard]] unsigned long solve() override;
+  [[nodiscard]] unsigned long solve(bool verbose) override;
 };

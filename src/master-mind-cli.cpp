@@ -6,29 +6,29 @@
 #include "helpers.hpp"
 #include "master-mind.hpp"
 
+using namespace helpers;
+
 static constexpr auto USAGE =
   R"(Usage: master-mind-cli [-h|--help] [--secret=SECRET] [-v|--verbose] GUESS
 
 -h --help       Show this help info
 --secret=SECRET Provide a custom secret instead of generating a random one
--v --verbose    Show guess/secret/outcome
-)";
+-v --verbose    Show guess/secret/outcome)";
 
 int main(int argc, char** argv) {
-  const auto args         = docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, true);
-  const bool verbose      = args.at("-v") || args.at("--verbose");
-  const bool customSecret = !!args.at("--secret");
+  const auto args          = docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, true);
+  auto       verbose       = args.at("-v").asBool() || args.at("--verbose").asBool();
+  auto       custom_secret = args.at("--secret");
 
-  auto&& secret =
-    (customSecret ? helpers::secretFromString(args.at("--secret").asString()) : helpers::generateRandomSecret());
-  auto guess = helpers::secretFromString(args.at("GUESS").asString());
-  auto score = MasterMind{std::move(secret)}.guess(guess);
+  auto&& secret = (custom_secret ? string_to_secret(custom_secret.asString()) : generate_secret());
+  auto   guess  = string_to_secret(args.at("GUESS").asString());
+  auto   score  = MasterMind{std::move(secret)}.guess(guess);
 
   if (verbose) {
-    helpers::print(secret);
-    helpers::print(guess);
-    helpers::print(score);
+    print(secret);
+    print(guess);
+    print(score);
   }
 
-  return (helpers::win(score) ? 0 : 1);
+  return (win(score) ? 0 : 1);
 }

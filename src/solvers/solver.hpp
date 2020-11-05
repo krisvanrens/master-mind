@@ -2,9 +2,9 @@
 
 #include "../master-mind.hpp"
 
-class MasterMindSolver {
+class Solver {
 public:
-  virtual ~MasterMindSolver() = default;
+  virtual ~Solver() = default;
 
-  [[nodiscard]] virtual unsigned long solve() = 0;
+  [[nodiscard]] virtual unsigned long solve(bool verbose) = 0;
 };

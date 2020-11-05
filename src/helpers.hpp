@@ -7,8 +7,8 @@
 
 namespace helpers {
 
-[[nodiscard]] Secret generateRandomSecret();
-[[nodiscard]] Secret secretFromString(const std::string& secret);
+[[nodiscard]] Secret generate_secret();
+[[nodiscard]] Secret string_to_secret(const std::string& secret);
 
 void print(const Score& score);
 void print(const Secret& secret);

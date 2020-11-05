@@ -25,4 +25,5 @@ target_link_libraries(
           project_warnings
           helpers
           solvers
-          CONAN_PKG::docopt.cpp)
+          CONAN_PKG::docopt.cpp
+          CONAN_PKG::fmt)

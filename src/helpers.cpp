@@ -11,7 +11,7 @@
 
 namespace helpers {
 
-Secret generateRandomSecret() {
+Secret generate_secret() {
   Secret result;
 
   std::random_device              device;
@@ -22,7 +22,7 @@ Secret generateRandomSecret() {
   return result;
 }
 
-Secret secretFromString(const std::string& secret) {
+Secret string_to_secret(const std::string& secret) {
   Secret result;
   auto   resultColor = result.begin();
 
@@ -51,4 +51,4 @@ void print(const Secret& secret) {
   print("Secret ", secret);
 }
 
-}
+} // namespace helpers
