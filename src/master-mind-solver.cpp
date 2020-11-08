@@ -33,22 +33,23 @@ static constexpr auto USAGE =
 --list       List solvers)";
 
 int main(int argc, char** argv) {
-  const auto args    = docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, true);
-  const auto verbose = args.at("-v").asBool() || args.at("--verbose").asBool();
+  const auto args        = docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, true);
+  const auto verbose     = args.at("-v").asBool() || args.at("--verbose").asBool();
+  const auto solver_type = args.at("SOLVER").asString();
 
   if (args.at("--list").asBool()) {
     std::ranges::for_each(solvers, [](const auto& solver) { fmt::print("{}\n", solver.first); });
-  } else {
-    auto solver_type = args.at("SOLVER").asString();
-    if (solvers.find(solver_type) != solvers.end()) {
-      MasterMind mm{generate_secret()};
-      auto       solver = solvers.at(solver_type)(mm);
-      fmt::print("Solver '{}' needed {} steps\n", solver_type, solver->solve(verbose));
-    } else {
-      fmt::print("Unknown solver type '{}', use '--list' to check out the available solvers.\n", solver_type);
-      return EXIT_FAILURE;
-    }
+    return EXIT_SUCCESS;
   }
+
+  if (solvers.find(solver_type) == solvers.end()) {
+    fmt::print("Unknown solver type '{}', use '--list' to check out the available solvers.\n", solver_type);
+    return EXIT_FAILURE;
+  }
+
+  MasterMind mm{generate_secret()};
+  auto       solver = solvers.at(solver_type)(mm);
+  fmt::print("Solver '{}' needed {} steps\n", solver_type, solver->solve(verbose));
 
   return EXIT_SUCCESS;
 }
