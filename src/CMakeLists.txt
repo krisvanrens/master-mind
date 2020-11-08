@@ -8,7 +8,9 @@ add_library(solvers STATIC solvers/solver.cpp solvers/brute-force.cpp solvers/na
 target_link_libraries(
   solvers
   PRIVATE project_options
-          project_warnings)
+          project_warnings
+          helpers
+          CONAN_PKG::fmt)
 
 add_executable(master-mind-cli master-mind-cli.cpp)
 target_link_libraries(
