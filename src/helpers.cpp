@@ -35,13 +35,15 @@ Secret string_to_secret(const std::string& secret) {
   return result;
 }
 
+std::string to_string(const auto& series) {
+  std::stringstream result;
+  std::ranges::for_each(std::ranges::reverse_view{series},
+                        [&](const auto field) { result << static_cast<int>(field); });
+  return result.str();
+}
+
 static void print(std::string&& prefix, const auto& series) {
-  std::cout << prefix << ": [" << [&] {
-    std::stringstream result;
-    std::ranges::for_each(std::ranges::reverse_view{series},
-                          [&](const auto field) { result << static_cast<int>(field); });
-    return result.str();
-  }() << "]\n";
+  std::cout << prefix << ": [" << to_string(series) << "]\n";
 }
 
 void print(const Score& score) {
