@@ -4,6 +4,7 @@
 #include <array>
 #include <numeric>
 #include <random>
+#include <stdexcept>
 #include <tuple>
 #include <utility>
 
@@ -96,6 +97,9 @@ constexpr Score MasterMind::scoreColorCorrectGuesses(const Secret&              
 
 constexpr MasterMind::MasterMind(Secret&& secret)
   : secret_{std::move(secret)} {
+  if (std::ranges::any_of(secret, [](auto value) { return value > static_cast<Color>(NUMBER_OF_COLORS); })) {
+    throw std::runtime_error{"Secret contains unsupported colors"};
+  }
 }
 
 constexpr Score MasterMind::guess(const Secret& secret) const {
