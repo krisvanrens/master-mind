@@ -34,7 +34,7 @@ unsigned long SolverBruteForce::solve(bool verbose) {
     auto [guess, number_of_tries] = generateNextGuess();
 
     if (verbose) {
-      fmt::print("Trying guess {}..\n", to_string(guess));
+      fmt::print("Trying guess #{}: {}..\n", number_of_tries, to_string(guess));
     }
 
     if (win(game_.guess(guess))) {
