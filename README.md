@@ -1,11 +1,19 @@
 # Master Mind
 A C++20 implementation of the classic 1970s game of [Master Mind](https://en.wikipedia.org/wiki/Mastermind_(board_game)).
+I will probably get to implementing this game in other languages as well.
 
 ## Description
 I wacked up this game on [Godbolt](https://godbolt.org), and will be extending it gradually to learn about C++20.
-The codemaker-side of the game is done, and I will probably get into writing a (semi-intelligent/non-stupud) solver as well.
+Alongside the codemaking-side of the game, a couple of automated solvers have been implemented.
 
-Live initial example here: https://www.godbolt.org/z/x1KvoY
+Live initial example of the codemaker-side here: https://www.godbolt.org/z/x1KvoY
+
+Currently the following codebreakers/solvers are available:
+
+* Brute-force (...),
+* Naive (straightforward yet pretty dumb algorithm).
+
+More will follow!
 
 ## Requirements
 
@@ -36,9 +44,33 @@ Usage: master-mind-cli [-h|--help] [--secret=SECRET] [-v|--verbose] GUESS
 ```
 E.g.:
 ```
-$ master-mind-cli --secret=9001285452600931 2348761560631927                                                                                                                                  │
+$ ./master-mind-cli --secret=9001285452600931 2348761560631927                                                                                                                                  │
 Secret: [9001285452600931]
 Secret: [2348761560631927]
 Score : [2211111111100000]
 ```
 The return code is `0` if the score is a win, otherwise it is `1`.
+
+## `master-mind-solver`
+
+This is a command-line tool to test the various solvers.
+
+Usage information
+```
+Usage: master-mind-solver [-h|--help] [-v|--verbose] [--list|SOLVER]
+
+-h --help    Show this help info
+-v --verbose Show detailed solver output
+--list       List solvers
+```
+E.g.:
+```
+$ ./master-mind-solver --list
+brute-force
+naive
+```
+or:
+```
+$ ./master-mind-solver brute-force
+Solver 'brute-force' needed 1342 steps
+```
