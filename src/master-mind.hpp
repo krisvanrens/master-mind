@@ -9,7 +9,7 @@
 #include <utility>
 
 static constexpr unsigned int NUMBER_OF_FIELDS = 4;
-static constexpr unsigned int NUMBER_OF_COLORS = 2;
+static constexpr unsigned int NUMBER_OF_COLORS = 6;
 
 enum struct Color : unsigned char {
   Black = 0,
