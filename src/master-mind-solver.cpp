@@ -35,7 +35,7 @@ static constexpr auto USAGE =
 int main(int argc, char** argv) {
   const auto args        = docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, true);
   const auto verbose     = args.at("-v").asBool() || args.at("--verbose").asBool();
-  const auto solver_type = args.at("SOLVER").asString();
+  const auto solver_type = (args.at("SOLVER") ? args.at("SOLVER").asString() : "");
 
   if (args.at("--list").asBool()) {
     std::ranges::for_each(solvers, [](const auto& solver) { fmt::print("{}\n", solver.first); });
