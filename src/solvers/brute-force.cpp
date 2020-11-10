@@ -9,11 +9,11 @@
 
 using namespace helpers;
 
-SolverBruteForce::SolverBruteForce(const MasterMind& game)
-  : Solver{game} {
+SolverBruteForce::SolverBruteForce(const MasterMind& game, bool verbose)
+  : Solver{game, verbose} {
 }
 
-unsigned long SolverBruteForce::solve(bool verbose) {
+unsigned long SolverBruteForce::solve() {
   while (true) {
     Secret      guess{};
     static auto guess_scalar = 0ul;
@@ -26,12 +26,8 @@ unsigned long SolverBruteForce::solve(bool verbose) {
       guess[field - 1] = static_cast<Color>(coefficient);
     }
 
-    if (verbose) {
-      fmt::print("Trying guess #{}: [{}]..\n", guess_scalar, to_string(guess));
-    }
-
-    if (win(game_.guess(guess))) {
-      return guess_scalar;
+    if (win(check(guess))) {
+      return number_of_tries_;
     }
   }
 }

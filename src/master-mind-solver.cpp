@@ -15,11 +15,11 @@
 
 using namespace helpers;
 
-using SolverFactory = std::unique_ptr<Solver> (*)(const MasterMind&);
+using SolverFactory = std::unique_ptr<Solver> (*)(const MasterMind&, bool verbose);
 
 template<typename SolverType>
-std::unique_ptr<Solver> solverFactory(const MasterMind& mm) {
-  return std::unique_ptr<SolverType>(new SolverType{mm});
+std::unique_ptr<Solver> solverFactory(const MasterMind& mm, bool verbose) {
+  return std::unique_ptr<SolverType>(new SolverType{mm, verbose});
 }
 
 static const std::map<std::string, SolverFactory> solvers = {{"brute-force", &solverFactory<SolverBruteForce>},
@@ -48,8 +48,8 @@ int main(int argc, char** argv) {
   }
 
   MasterMind mm{generate_secret()};
-  auto       solver = solvers.at(solver_type)(mm);
-  fmt::print("Solver '{}' needed {} steps\n", solver_type, solver->solve(verbose));
+  auto       solver = solvers.at(solver_type)(mm, verbose);
+  fmt::print("Solver '{}' needed {} steps\n", solver_type, solver->solve());
 
   return EXIT_SUCCESS;
 }
