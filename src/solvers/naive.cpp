@@ -3,30 +3,27 @@
 #include <fmt/format.h>
 
 #include <algorithm>
-#include <vector>
+#include <stdexcept>
 
 #include "../helpers.hpp"
 #include "../master-mind.hpp"
 
-#define CHECK(secret)                \
-  if (helpers::win(check(secret))) { \
-    return number_of_tries_;         \
-  }
+using namespace std::ranges;
 
-SolverNaive::SolverNaive(const MasterMind& game, bool verbose)
-  : Solver{game, verbose} {
+void SolverNaive::check_with_exception(Secret secret) {
+  if (helpers::win(check(secret))) {
+    throw true;
+  }
 }
 
-unsigned long SolverNaive::solve() {
-  using namespace std::ranges;
-
-  std::vector<Color> colors;
+SolverNaive::Colors SolverNaive::solve_colors() {
+  Colors colors;
 
   for (unsigned int color = 0u; color < NUMBER_OF_COLORS; color++) {
     Secret guess{};
     fill(guess, static_cast<Color>(color));
 
-    CHECK(guess);
+    check_with_exception(guess);
 
     for_each(game_.guess(guess), [&](auto field) {
       if (field == Outcome::Correct) {
@@ -39,11 +36,17 @@ unsigned long SolverNaive::solve() {
     throw std::runtime_error("Number of guessed colors does not correspond to the number of fields!");
   }
 
+  return colors;
+}
+
+Secret SolverNaive::guess_from_colors(Colors&& colors) {
   Secret guess{};
   for_each(indices(guess), [&](auto field) { guess[field] = colors[field]; });
 
-  CHECK(guess);
+  return guess;
+}
 
+Secret SolverNaive::find_best_shift(Secret&& guess) {
   const auto shiftRight = [](auto& secret) {
     Color first = secret[0];
     for (unsigned int field = 1; field < NUMBER_OF_FIELDS; field++) {
@@ -57,12 +60,14 @@ unsigned long SolverNaive::solve() {
     return count_if(game_.guess(secret), [](auto outcome) { return outcome == Outcome::Correct; });
   };
 
+  check_with_exception(guess);
+
   auto best_guess          = guess;
   auto best_number_correct = count_correct(guess);
   for (auto shift = 0u; shift < (NUMBER_OF_FIELDS - 1); shift++) {
     shiftRight(guess);
 
-    CHECK(guess);
+    check_with_exception(guess);
 
     auto number_correct = count_correct(guess);
     if (number_correct > best_number_correct) {
@@ -71,9 +76,27 @@ unsigned long SolverNaive::solve() {
     }
   }
 
-  CHECK(best_guess);
+  return best_guess;
+}
 
-  // TODO: Find the solution!
+Secret SolverNaive::find_best_swap(Secret&& guess) {
+  // TODO: Swap until the correct solution is found..
+
+  return guess;
+}
+
+SolverNaive::SolverNaive(const MasterMind& game, bool verbose)
+  : Solver{game, verbose} {
+}
+
+unsigned long SolverNaive::solve() {
+  try {
+    auto guess = find_best_swap(find_best_shift(guess_from_colors(solve_colors())));
+
+    helpers::print(guess);
+    helpers::print(game_.guess(guess));
+  } catch (...) {
+  }
 
   return number_of_tries_;
 }
