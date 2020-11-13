@@ -4,7 +4,7 @@ target_link_libraries(
   PRIVATE project_options
           project_warnings)
 
-add_library(solvers STATIC solvers/solver.cpp solvers/brute-force.cpp solvers/naive.cpp)
+add_library(solvers STATIC solvers/solver.cpp solvers/brute-force.cpp solvers/naive.cpp solvers/optimal.cpp)
 target_link_libraries(
   solvers
   PRIVATE project_options
