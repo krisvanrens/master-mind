@@ -1,0 +1,22 @@
+#!/bin/bash
+
+SOLVER="build/bin/master-mind-solver"
+NUMBER_OF_ITERATIONS=1000
+
+if [ ! -x ${SOLVER} ]
+then
+  1>&2 echo "Master mind solver not found!"
+  exit 1
+fi
+
+for SOLVER_TYPE in {brute-force,naive,optimal}
+do
+  SUM_TRIES=0
+
+  for TRY in $(seq ${NUMBER_OF_ITERATIONS})
+  do
+    SUM_TRIES=$((${SUM_TRIES}+$(./${SOLVER} -q ${SOLVER_TYPE})))
+  done
+
+  printf '%12s: %u\n' ${SOLVER_TYPE} $((${SUM_TRIES}/${NUMBER_OF_ITERATIONS}))
+done
