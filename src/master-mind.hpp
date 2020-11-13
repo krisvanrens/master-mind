@@ -8,6 +8,8 @@
 #include <tuple>
 #include <utility>
 
+using namespace std::ranges;
+
 static constexpr unsigned int NUMBER_OF_FIELDS = 4;
 static constexpr unsigned int NUMBER_OF_COLORS = 6;
 
@@ -64,7 +66,7 @@ constexpr MasterMind::IntermediateScore MasterMind::scoreFullyCorrectGuesses(con
   Score           result = {};
   Container<bool> marker = {};
 
-  std::ranges::for_each(indices(secret), [&](auto index) {
+  for_each(indices(secret), [&](auto index) {
     if (secret[index] == secret_[index]) {
       result[index] = Outcome::Correct;
       marker[index] = true;
@@ -78,9 +80,9 @@ constexpr Score MasterMind::scoreColorCorrectGuesses(const Secret&              
                                                      MasterMind::IntermediateScore&& score) const {
   auto&& [result, marker] = std::move(score);
 
-  std::ranges::for_each(indices(secret), [&](auto index) {
+  for_each(indices(secret), [&](auto index) {
     if (result[index] != Outcome::Correct) {
-      std::ranges::any_of(indices(secret), [&](auto markerIndex) {
+      any_of(indices(secret), [&](auto markerIndex) {
         if (!marker[markerIndex] && (secret[index] == secret_[markerIndex])) {
           result[index]       = Outcome::CorrectColor;
           marker[markerIndex] = true;
@@ -97,13 +99,13 @@ constexpr Score MasterMind::scoreColorCorrectGuesses(const Secret&              
 
 constexpr MasterMind::MasterMind(Secret&& secret)
   : secret_{std::move(secret)} {
-  if (std::ranges::any_of(secret, [](auto value) { return value > static_cast<Color>(NUMBER_OF_COLORS); })) {
+  if (any_of(secret, [](auto value) { return value > static_cast<Color>(NUMBER_OF_COLORS); })) {
     throw std::runtime_error{"Secret contains unsupported colors"};
   }
 }
 
 constexpr Score MasterMind::guess(const Secret& secret) const {
   auto result = scoreColorCorrectGuesses(secret, scoreFullyCorrectGuesses(secret));
-  std::ranges::sort(result, [](auto a, auto b) { return static_cast<int>(a) > static_cast<int>(b); });
+  sort(result, [](auto a, auto b) { return static_cast<int>(a) > static_cast<int>(b); });
   return result;
 }
