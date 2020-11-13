@@ -11,9 +11,8 @@ Live initial example of the codemaker-side here: https://www.godbolt.org/z/x1Kvo
 Currently the following codebreakers/solvers are available:
 
 * Brute-force (...),
-* Naive (straightforward yet pretty dumb algorithm).
-
-More will follow!
+* Naive (straightforward yet pretty dumb algorithm),
+* Optimal solver.
 
 ## Requirements
 
@@ -57,9 +56,10 @@ This is a command-line tool to test the various solvers.
 
 Usage information
 ```
-Usage: master-mind-solver [-h|--help] [-v|--verbose] [--list|SOLVER]
+Usage: master-mind-solver [-h|--help] [-q|--quiet] [-v|--verbose] [--list|SOLVER]
 
 -h --help    Show this help info
+-q --quiet   Show only the number of tries needed
 -v --verbose Show detailed solver output
 --list       List solvers
 ```
