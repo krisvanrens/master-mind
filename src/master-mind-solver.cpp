@@ -28,14 +28,16 @@ static const std::map<std::string, SolverFactory> solvers = {{"brute-force", &so
                                                              {"optimal", &solverFactory<SolverOptimal>}};
 
 static constexpr auto USAGE =
-  R"(Usage: master-mind-solver [-h|--help] [-v|--verbose] [--list|SOLVER]
+  R"(Usage: master-mind-solver [-h|--help] [-q|--quiet] [-v|--verbose] [--list|SOLVER]
 
 -h --help    Show this help info
+-q --quiet   Show only the number of tries needed
 -v --verbose Show detailed solver output
 --list       List solvers)";
 
 int main(int argc, char** argv) {
   const auto args        = docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, true);
+  const auto quiet       = args.at("-q").asBool() || args.at("--quiet").asBool();
   const auto verbose     = args.at("-v").asBool() || args.at("--verbose").asBool();
   const auto solver_type = (args.at("SOLVER") ? args.at("SOLVER").asString() : "");
 
@@ -51,7 +53,12 @@ int main(int argc, char** argv) {
 
   MasterMind mm{generate_secret()};
   auto       solver = solvers.at(solver_type)(mm, verbose);
-  fmt::print("Solver '{}' needed {} steps\n", solver_type, solver->solve());
+
+  if (quiet) {
+    fmt::print("{}", solver->solve());
+  } else {
+    fmt::print("Solver '{}' needed {} steps\n", solver_type, solver->solve());
+  }
 
   return EXIT_SUCCESS;
 }
