@@ -7,8 +7,6 @@
 #include "../helpers.hpp"
 #include "../master-mind.hpp"
 
-using namespace helpers;
-
 SolverBruteForce::SolverBruteForce(const MasterMind& game, bool verbose)
   : Solver{game, verbose} {
 }
@@ -26,7 +24,7 @@ unsigned long SolverBruteForce::solve() {
       guess[field - 1] = static_cast<Color>(coefficient);
     }
 
-    if (win(check(guess))) {
+    if (helpers::win(check(guess))) {
       return number_of_tries_;
     }
   }
