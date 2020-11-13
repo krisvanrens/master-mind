@@ -116,10 +116,7 @@ SolverNaive::SolverNaive(const MasterMind& game, bool verbose)
 
 unsigned long SolverNaive::solve() {
   try {
-    auto guess = find_best_swap(find_best_shift(guess_from_colors(solve_colors())));
-
-    helpers::print(guess);
-    helpers::print(game_.guess(guess));
+    [[maybe_unused]] auto guess = find_best_swap(find_best_shift(guess_from_colors(solve_colors())));
   } catch (...) {
   }
 
