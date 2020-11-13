@@ -80,9 +80,34 @@ Secret SolverNaive::find_best_shift(Secret&& guess) {
 }
 
 Secret SolverNaive::find_best_swap(Secret&& guess) {
-  // TODO: Swap until the correct solution is found..
+  const auto count_correct = [this](const auto& secret) {
+    return count_if(game_.guess(secret), [](auto outcome) { return outcome == Outcome::Correct; });
+  };
 
-  return guess;
+  auto best_guess          = guess;
+  auto best_number_correct = count_correct(guess);
+
+  while (true) {
+    for (auto source_field = 0u; source_field < (NUMBER_OF_FIELDS - 1); source_field++) {
+      auto guess_initial = best_guess;
+
+      for (auto dest_field = source_field + 1; dest_field < NUMBER_OF_FIELDS; dest_field++) {
+        auto guess_swapped = guess_initial;
+
+        std::swap(guess_swapped[source_field], guess_swapped[dest_field]);
+
+        check_with_exception(guess_swapped);
+
+        auto number_correct = count_correct(guess_swapped);
+        if (number_correct > best_number_correct) {
+          best_guess          = guess_swapped;
+          best_number_correct = number_correct;
+        }
+      }
+    }
+  }
+
+  return best_guess;
 }
 
 SolverNaive::SolverNaive(const MasterMind& game, bool verbose)
