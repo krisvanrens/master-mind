@@ -30,6 +30,10 @@ SolverNaive::Colors SolverNaive::solve_colors() {
         colors.push_back(static_cast<Color>(color));
       }
     });
+
+    if (colors.size() == NUMBER_OF_FIELDS) {
+      break;
+    }
   }
 
   if (colors.size() != NUMBER_OF_FIELDS) {
