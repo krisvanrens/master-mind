@@ -58,7 +58,15 @@ SolverKnuth::SolverKnuth(const MasterMind& game, bool verbose)
  * 7. Repeat from step 3.
  */
 unsigned long SolverKnuth::solve() {
+  if ((NUMBER_OF_COLORS != 6) || (NUMBER_OF_FIELDS != 4)) {
+    fmt::print("Error: this solver only works with four fields of six colors. Aborting.\n");
+    return 0;
+  }
+
   initialize_set();
+
+  auto solution = check(Secret{Color::Black, Color::Black, Color::White, Color::White});
+  helpers::print(solution);
 
   // TODO
 
