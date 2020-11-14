@@ -50,8 +50,8 @@ function checkForConfigurationFile()
 function runClangFormat()
 {
   FILE_LIST=$(mktemp)
-  find src/ -type f -name "*.[ch]pp"   >  ${FILE_LIST}
-  find tests/ -type f -name "*.[ch]pp" >> ${FILE_LIST}
+  find source/ -type f -name "*.[ch]pp" >  ${FILE_LIST}
+  find tests/ -type f -name "*.[ch]pp"  >> ${FILE_LIST}
   
   if [ ${FIX_MODE} -eq 1 ]
   then
