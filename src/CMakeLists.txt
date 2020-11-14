@@ -1,10 +1,17 @@
-add_library(helpers STATIC helpers.cpp)
+add_library(
+  helpers
+  STATIC helpers.cpp)
 target_link_libraries(
   helpers
   PRIVATE project_options
           project_warnings)
 
-add_library(solvers STATIC solvers/solver.cpp solvers/brute-force.cpp solvers/naive.cpp solvers/optimal.cpp)
+add_library(
+  solvers
+  STATIC solvers/naive.cpp
+         solvers/brute-force.cpp
+         solvers/knuth.cpp
+         solvers/solver.cpp)
 target_link_libraries(
   solvers
   PRIVATE project_options
