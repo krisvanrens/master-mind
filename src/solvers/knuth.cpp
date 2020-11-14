@@ -2,10 +2,31 @@
 
 #include <fmt/format.h>
 
+#include <cmath>
+
+#include "../helpers.hpp"
 #include "../master-mind.hpp"
+
+void SolverKnuth::initialize_set() {
+  auto guess_scalar = 0ul;
+
+  for (auto& code : codes_) {
+    auto remainder = guess_scalar++;
+
+    for (unsigned int field = NUMBER_OF_FIELDS; (field != 0u) && (remainder != 0); field--) {
+      auto exponent    = static_cast<unsigned long>(std::pow(NUMBER_OF_COLORS, field - 1));
+      auto coefficient = remainder / exponent;
+      remainder -= (coefficient == 0ul ? 0ul : coefficient * exponent);
+      code[field - 1] = static_cast<Color>(coefficient);
+    }
+  }
+}
 
 SolverKnuth::SolverKnuth(const MasterMind& game, bool verbose)
   : Solver{game, verbose} {
+  auto number_of_codes = static_cast<std::size_t>(std::pow(NUMBER_OF_COLORS, NUMBER_OF_FIELDS));
+  codes_.reserve(number_of_codes);
+  codes_.resize(number_of_codes);
 }
 
 /**
@@ -37,6 +58,8 @@ SolverKnuth::SolverKnuth(const MasterMind& game, bool verbose)
  * 7. Repeat from step 3.
  */
 unsigned long SolverKnuth::solve() {
+  initialize_set();
+
   // TODO
 
   return number_of_tries_;
