@@ -11,6 +11,7 @@ add_library(
   STATIC solvers/naive.cpp
          solvers/brute-force.cpp
          solvers/knuth.cpp
+         solvers/optimal.cpp
          solvers/solver.cpp)
 target_link_libraries(
   solvers

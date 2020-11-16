@@ -12,6 +12,7 @@
 #include "solvers/brute-force.hpp"
 #include "solvers/knuth.hpp"
 #include "solvers/naive.hpp"
+#include "solvers/optimal.hpp"
 #include "solvers/solver.hpp"
 
 using namespace helpers;
@@ -25,7 +26,8 @@ std::unique_ptr<Solver> solverFactory(const MasterMind& mm, bool verbose) {
 
 static const std::map<std::string, SolverFactory> solvers = {{"brute-force", &solverFactory<SolverBruteForce>},
                                                              {"knuth", &solverFactory<SolverKnuth>},
-                                                             {"naive", &solverFactory<SolverNaive>}};
+                                                             {"naive", &solverFactory<SolverNaive>},
+                                                             {"optimal", &solverFactory<SolverOptimal>}};
 
 static constexpr auto USAGE =
   R"(Usage: master-mind-solver [-h|--help] [-q|--quiet] [-v|--verbose] [--list|SOLVER]
