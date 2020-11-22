@@ -22,11 +22,15 @@ int main(int argc, char** argv) {
 
   auto&& secret = (custom_secret ? string_to_secret(custom_secret.asString()) : generate_secret());
   auto   guess  = string_to_secret(args.at("GUESS").asString());
-  auto   score  = MasterMind{std::move(secret)}.guess(guess);
 
   if (verbose) {
     print(secret);
     print(guess);
+  }
+
+  auto score = MasterMind{std::move(secret)}.guess(guess);
+
+  if (verbose) {
     print(score);
   }
 
