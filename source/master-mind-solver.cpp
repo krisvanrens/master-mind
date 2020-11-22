@@ -23,12 +23,12 @@ std::unique_ptr<Solver> solverFactory(const MasterMind& mm, bool verbose) {
   return std::unique_ptr<SolverType>(new SolverType{mm, verbose});
 }
 
-static const std::map<std::string, SolverFactory> solvers = {{"brute-force", &solverFactory<SolverBruteForce>},
-                                                             {"knuth", &solverFactory<SolverKnuth>},
-                                                             {"naive", &solverFactory<SolverNaive>},
-                                                             {"optimal", &solverFactory<SolverOptimal>}};
+const std::map<std::string, SolverFactory> solvers = {{"brute-force", &solverFactory<SolverBruteForce>},
+                                                      {"knuth", &solverFactory<SolverKnuth>},
+                                                      {"naive", &solverFactory<SolverNaive>},
+                                                      {"optimal", &solverFactory<SolverOptimal>}};
 
-static constexpr auto USAGE =
+constexpr auto USAGE =
   R"(Usage: master-mind-solver [-h|--help] [-q|--quiet] [-v|--verbose] [--list|SOLVER]
 
 -h --help    Show this help info
