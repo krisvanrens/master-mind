@@ -5,14 +5,13 @@
 #include "../master-mind.hpp"
 #include "solver.hpp"
 
+using Colors = std::vector<Color>;
+
 class SolverNaive final : public Solver {
 private:
-  using Colors = std::vector<Color>;
-
   void   check_with_exception(Secret secret);
   Colors solve_colors();
-  Secret guess_from_colors(Colors&& colors);
-  Secret find_best_shift(Secret&& secret);
+  Secret find_best_shift(Secret&& guess);
   Secret find_best_swap(Secret&& guess);
 
 public:

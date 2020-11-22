@@ -10,13 +10,20 @@
 
 using namespace std::ranges;
 
+static Secret guess_from_colors(Colors&& colors) {
+  Secret guess{};
+  for_each(indices(guess), [&](auto field) { guess[field] = colors[field]; });
+
+  return guess;
+}
+
 void SolverNaive::check_with_exception(Secret secret) {
   if (helpers::win(check(secret))) {
     throw true;
   }
 }
 
-SolverNaive::Colors SolverNaive::solve_colors() {
+Colors SolverNaive::solve_colors() {
   Colors colors;
 
   for (unsigned int color = 0u; color < NUMBER_OF_COLORS; color++) {
@@ -41,13 +48,6 @@ SolverNaive::Colors SolverNaive::solve_colors() {
   }
 
   return colors;
-}
-
-Secret SolverNaive::guess_from_colors(Colors&& colors) {
-  Secret guess{};
-  for_each(indices(guess), [&](auto field) { guess[field] = colors[field]; });
-
-  return guess;
 }
 
 Secret SolverNaive::find_best_shift(Secret&& guess) {
