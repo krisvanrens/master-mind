@@ -12,7 +12,6 @@ SolverOptimal::SolverOptimal(const MasterMind& game, bool verbose)
 }
 
 unsigned long SolverOptimal::solve() {
-
   // TODO
 
   return number_of_tries_;
