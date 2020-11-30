@@ -53,6 +53,8 @@ private:
 
   Secret secret_ = {};
 
+  constexpr void validate_secret();
+
   [[nodiscard]] constexpr IntermediateScore scoreFullyCorrectGuesses(const Secret& secret) const;
   [[nodiscard]] constexpr Score scoreColorCorrectGuesses(const Secret& secret, IntermediateScore&& score) const;
 
@@ -61,6 +63,12 @@ public:
 
   [[nodiscard]] constexpr Score guess(const Secret& secret) const;
 };
+
+constexpr void MasterMind::validate_secret() {
+  if (any_of(secret_, [](auto value) { return value > static_cast<Color>(NUMBER_OF_COLORS); })) {
+    throw std::runtime_error{"Secret contains unsupported colors"};
+  }
+}
 
 constexpr MasterMind::IntermediateScore MasterMind::scoreFullyCorrectGuesses(const Secret& secret) const {
   Score           result = {};
@@ -99,9 +107,7 @@ constexpr Score MasterMind::scoreColorCorrectGuesses(const Secret&              
 
 constexpr MasterMind::MasterMind(Secret&& secret)
   : secret_{std::move(secret)} {
-  if (any_of(secret, [](auto value) { return value > static_cast<Color>(NUMBER_OF_COLORS); })) {
-    throw std::runtime_error{"Secret contains unsupported colors"};
-  }
+  validate_secret();
 }
 
 constexpr Score MasterMind::guess(const Secret& secret) const {
