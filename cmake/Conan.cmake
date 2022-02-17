@@ -16,10 +16,10 @@ macro(run_conan)
   conan_cmake_run(
     REQUIRES
     ${CONAN_EXTRA_REQUIRES}
-    doctest/2.4.0
+    doctest/2.4.8
     docopt.cpp/0.6.3
-    fmt/7.0.3
-    spdlog/1.8.0
+    fmt/8.1.1
+    spdlog/1.9.2
     OPTIONS
     ${CONAN_EXTRA_OPTIONS}
     BASIC_SETUP
