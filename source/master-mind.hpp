@@ -10,7 +10,7 @@
 
 using namespace std::ranges;
 
-static constexpr unsigned int NUMBER_OF_FIELDS = 64;
+static constexpr unsigned int NUMBER_OF_FIELDS = 16;
 static constexpr unsigned int NUMBER_OF_COLORS = 10;
 
 enum struct Color : unsigned char { Black = 0, White, Blue, Green, Yellow, Orange, Red, Purple, Brown, Grey, MAX_NUMBER_OF_COLORS_ };

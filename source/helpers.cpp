@@ -1,14 +1,27 @@
 #include "helpers.hpp"
 
+#include <fmt/core.h>
+
 #include <algorithm>
-#include <cstdlib>
+#include <charconv>
 #include <iostream>
 #include <random>
 #include <ranges>
 #include <sstream>
 #include <string>
+#include <system_error>
 
 #include "master-mind.hpp"
+
+[[nodiscard]] static Color char_to_color(char character) {
+  unsigned int result;
+  auto [_, ec] = std::from_chars(&character, &character + 1, result);
+  if ((ec != std::errc{}) || (result >= NUMBER_OF_COLORS)) {
+    throw std::runtime_error{fmt::format("Failed to convert character '{}' to color", character)};
+  }
+
+  return static_cast<Color>(result);
+}
 
 namespace helpers {
 
@@ -23,14 +36,12 @@ Secret generate_secret() {
   return result;
 }
 
-Secret string_to_secret(const std::string& secret) {
-  Secret result;
+Secret string_to_secret(const std::string& str) {
+  Secret result{};
   auto   resultColor = result.begin();
 
-  std::ranges::for_each_n(secret.cbegin(), static_cast<long>(std::min(secret.size(), result.size())), [&](auto character) {
-    unsigned int color = static_cast<unsigned int>(std::atoi(&character));
-    *resultColor++     = static_cast<Color>(std::clamp(color, 0u, NUMBER_OF_COLORS - 1));
-  });
+  std::ranges::for_each_n(str.cbegin(), static_cast<long>(std::min(str.size(), result.size())),
+                          [&](auto character) { *resultColor++ = char_to_color(character); });
 
   return result;
 }

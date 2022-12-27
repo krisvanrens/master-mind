@@ -1,5 +1,5 @@
 #include <docopt/docopt.h>
-#include <fmt/format.h>
+#include <fmt/core.h>
 
 #include <algorithm>
 #include <cstdlib>

@@ -4,7 +4,8 @@ add_library(
 target_link_libraries(
   helpers
   PRIVATE project_options
-          project_warnings)
+          project_warnings
+          CONAN_PKG::fmt)
 
 add_library(
   solvers
