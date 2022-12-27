@@ -13,19 +13,7 @@ using namespace std::ranges;
 static constexpr unsigned int NUMBER_OF_FIELDS = 64;
 static constexpr unsigned int NUMBER_OF_COLORS = 10;
 
-enum struct Color : unsigned char {
-  Black = 0,
-  White,
-  Blue,
-  Green,
-  Yellow,
-  Orange,
-  Red,
-  Purple,
-  Brown,
-  Grey,
-  MAX_NUMBER_OF_COLORS_
-};
+enum struct Color : unsigned char { Black = 0, White, Blue, Green, Yellow, Orange, Red, Purple, Brown, Grey, MAX_NUMBER_OF_COLORS_ };
 
 static_assert(NUMBER_OF_FIELDS > 0);
 static_assert(NUMBER_OF_COLORS > 0);
@@ -54,7 +42,7 @@ private:
   Secret secret_ = {};
 
   [[nodiscard]] constexpr IntermediateScore scoreFullyCorrectGuesses(const Secret& secret) const;
-  [[nodiscard]] constexpr Score scoreColorCorrectGuesses(const Secret& secret, IntermediateScore&& score) const;
+  [[nodiscard]] constexpr Score             scoreColorCorrectGuesses(const Secret& secret, IntermediateScore&& score) const;
 
 public:
   explicit constexpr MasterMind(Secret&& secret);
@@ -76,8 +64,7 @@ constexpr MasterMind::IntermediateScore MasterMind::scoreFullyCorrectGuesses(con
   return {result, marker};
 }
 
-constexpr Score MasterMind::scoreColorCorrectGuesses(const Secret&                   secret,
-                                                     MasterMind::IntermediateScore&& score) const {
+constexpr Score MasterMind::scoreColorCorrectGuesses(const Secret& secret, MasterMind::IntermediateScore&& score) const {
   auto&& [result, marker] = std::move(score);
 
   for_each(indices(secret), [&](auto index) {

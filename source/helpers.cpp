@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <random>
+#include <ranges>
 #include <sstream>
 #include <string>
 
@@ -26,19 +27,17 @@ Secret string_to_secret(const std::string& secret) {
   Secret result;
   auto   resultColor = result.begin();
 
-  std::ranges::for_each_n(secret.cbegin(), static_cast<long>(std::min(secret.size(), result.size())),
-                          [&](auto character) {
-                            unsigned int color = static_cast<unsigned int>(std::atoi(&character));
-                            *resultColor++     = static_cast<Color>(std::clamp(color, 0u, NUMBER_OF_COLORS - 1));
-                          });
+  std::ranges::for_each_n(secret.cbegin(), static_cast<long>(std::min(secret.size(), result.size())), [&](auto character) {
+    unsigned int color = static_cast<unsigned int>(std::atoi(&character));
+    *resultColor++     = static_cast<Color>(std::clamp(color, 0u, NUMBER_OF_COLORS - 1));
+  });
 
   return result;
 }
 
 std::string to_string(const auto& series) {
   std::stringstream result;
-  std::ranges::for_each(std::ranges::reverse_view{series},
-                        [&](const auto field) { result << static_cast<int>(field); });
+  std::ranges::for_each(std::ranges::reverse_view{series}, [&](const auto field) { result << static_cast<int>(field); });
   return result.str();
 }
 
