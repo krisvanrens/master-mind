@@ -4,7 +4,6 @@
 
 #include <algorithm>
 #include <charconv>
-#include <iostream>
 #include <random>
 #include <ranges>
 #include <sstream>
@@ -39,10 +38,8 @@ Secret generate_secret() {
 Secret string_to_secret(const std::string& str) {
   Secret result{};
   auto   resultColor = result.begin();
-
   std::ranges::for_each_n(str.cbegin(), static_cast<long>(std::min(str.size(), result.size())),
                           [&](auto character) { *resultColor++ = char_to_color(character); });
-
   return result;
 }
 
@@ -53,7 +50,7 @@ std::string to_string(const auto& series) {
 }
 
 static void print(std::string&& prefix, const auto& series) {
-  std::cout << prefix << ": [" << to_string(series) << "]\n";
+  fmt::print("{}: [{}]\n", prefix, to_string(series));
 }
 
 void print(const Score& score) {
