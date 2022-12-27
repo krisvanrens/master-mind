@@ -12,7 +12,7 @@ Currently the following codebreakers/solvers are available:
 
 * Brute-force (...),
 * Naive (straightforward yet pretty dumb algorithm),
-* Knuth solver (see [Wikipedia](https://en.wikipedia.org/wiki/Mastermind_(board_game)) (WIP).
+* Knuth solver (see [Wikipedia](https://en.wikipedia.org/wiki/Mastermind_(board_game))) (WIP).
 
 ## Requirements
 
