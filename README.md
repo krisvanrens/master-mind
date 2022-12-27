@@ -3,7 +3,7 @@ A C++20 implementation of the classic 1970s game of [Master Mind](https://en.wik
 I will probably get to implementing this game in other languages as well.
 
 ## Description
-I wacked up this game on [Godbolt](https://godbolt.org), and will be extending it gradually to learn about C++20.
+I cooked up this game on [Godbolt](https://godbolt.org) to learn about C++20.
 Alongside the codemaking-side of the game, a couple of automated solvers have been implemented.
 
 Live initial example of the codemaker-side here: https://www.godbolt.org/z/x1KvoY
