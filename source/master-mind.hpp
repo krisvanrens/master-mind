@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <numeric>
 #include <random>
 #include <stdexcept>
@@ -10,6 +11,7 @@
 
 using namespace std::ranges;
 
+// General compile-time project configuration.
 static constexpr unsigned int NUMBER_OF_FIELDS = 16;
 static constexpr unsigned int NUMBER_OF_COLORS = 10;
 
@@ -29,6 +31,7 @@ using Score   = Container<Outcome>;
 using Indices = Container<unsigned int>;
 
 template<typename T>
+  requires requires(const T& t) { t.begin(), t.end(); }
 [[nodiscard]] constexpr auto indices(T) {
   Indices result;
   std::iota(result.begin(), result.end(), 0);
@@ -39,7 +42,7 @@ class MasterMind {
 private:
   using IntermediateScore = std::pair<Score, Container<bool>>;
 
-  Secret secret_ = {};
+  Secret secret_{};
 
   [[nodiscard]] constexpr IntermediateScore scoreFullyCorrectGuesses(const Secret& secret) const;
   [[nodiscard]] constexpr Score             scoreColorCorrectGuesses(const Secret& secret, IntermediateScore&& score) const;
@@ -51,8 +54,8 @@ public:
 };
 
 constexpr MasterMind::IntermediateScore MasterMind::scoreFullyCorrectGuesses(const Secret& secret) const {
-  Score           result = {};
-  Container<bool> marker = {};
+  Score           result{};
+  Container<bool> marker{};
 
   for_each(indices(secret), [&](auto index) {
     if (secret[index] == secret_[index]) {
@@ -64,7 +67,7 @@ constexpr MasterMind::IntermediateScore MasterMind::scoreFullyCorrectGuesses(con
   return {result, marker};
 }
 
-constexpr Score MasterMind::scoreColorCorrectGuesses(const Secret& secret, MasterMind::IntermediateScore&& score) const {
+constexpr Score MasterMind::scoreColorCorrectGuesses(const Secret& secret, IntermediateScore&& score) const {
   auto&& [result, marker] = std::move(score);
 
   for_each(indices(secret), [&](auto index) {
@@ -93,6 +96,6 @@ constexpr MasterMind::MasterMind(Secret&& secret)
 
 constexpr Score MasterMind::guess(const Secret& secret) const {
   auto result = scoreColorCorrectGuesses(secret, scoreFullyCorrectGuesses(secret));
-  sort(result, [](auto a, auto b) { return static_cast<int>(a) > static_cast<int>(b); });
+  sort(result, std::greater{});
   return result;
 }

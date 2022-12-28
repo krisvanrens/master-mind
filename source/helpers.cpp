@@ -12,6 +12,8 @@
 
 #include "master-mind.hpp"
 
+using namespace std::ranges;
+
 [[nodiscard]] static Color char_to_color(char character) {
   unsigned int result;
   auto [_, ec] = std::from_chars(&character, &character + 1, result);
@@ -30,7 +32,7 @@ Secret generate_secret() {
   std::random_device              device;
   std::mt19937                    generator(device());
   std::uniform_int_distribution<> distribution(0, NUMBER_OF_COLORS - 1);
-  std::ranges::for_each(result, [&](auto& field) { field = static_cast<Color>(distribution(generator)); });
+  for_each(result, [&](auto& field) { field = static_cast<Color>(distribution(generator)); });
 
   return result;
 }
@@ -38,14 +40,14 @@ Secret generate_secret() {
 Secret string_to_secret(const std::string& str) {
   Secret result{};
   auto   resultColor = result.begin();
-  std::ranges::for_each_n(str.cbegin(), static_cast<long>(std::min(str.size(), result.size())),
-                          [&](auto character) { *resultColor++ = char_to_color(character); });
+  for_each_n(str.cbegin(), static_cast<long>(std::min(str.size(), result.size())),
+             [&](auto character) { *resultColor++ = char_to_color(character); });
   return result;
 }
 
 std::string to_string(const auto& series) {
   std::stringstream result;
-  std::ranges::for_each(std::ranges::reverse_view{series}, [&](const auto field) { result << static_cast<int>(field); });
+  for_each(reverse_view{series}, [&](const auto field) { result << static_cast<int>(field); });
   return result.str();
 }
 
