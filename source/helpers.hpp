@@ -10,7 +10,7 @@ namespace helpers {
 [[nodiscard]] Secret generate_secret();
 [[nodiscard]] Secret string_to_secret(const std::string& secret);
 
-std::string to_string(const auto& series);
+[[nodiscard]] std::string to_string(const auto& series);
 
 void print(const Score& score);
 void print(const Secret& secret);
