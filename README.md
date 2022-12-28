@@ -1,6 +1,5 @@
 # Master Mind
 A C++20 implementation of the classic 1970s game of [Master Mind](https://en.wikipedia.org/wiki/Mastermind_(board_game)).
-I will probably get to implementing this game in other languages as well.
 
 ## Description
 I cooked up this game on [Godbolt](https://godbolt.org) to learn about C++20.
